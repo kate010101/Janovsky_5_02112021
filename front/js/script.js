@@ -18,7 +18,7 @@ function products(product) {
         <article>
             <img src=${product[i].imageUrl} alt="Lorem ipsum dolor sit amet, Kanap name1">
             <h3 class="productName">${product[i].name}</h3>
-            <p class="price" >${product[i].price}</p>
+            <p class="price" >${product[i].price +"€"}</p>
             <p class="productDescription">${product[i].description}</p>
         </article>
         </a>`;
