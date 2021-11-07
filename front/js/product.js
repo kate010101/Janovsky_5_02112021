@@ -7,14 +7,18 @@ fetch('http://localhost:3000/api/products/' + newId)
         return response.json();
     })
     .then(function (data) {
-        products(data);
+        seeProduct(data);
     });
 
 
-function products(product) {
+function seeProduct(product) {
 
-    let image = document.getElementsByClassName('item__img');
-    image.innerHTML += `<img src=${product.imageUrl} alt=${product.altTxt}>`;
+    var image = new Image();    
+    image.src = product.imageUrl;
+
+    let imgProduct = document.getElementsByClassName('item__img');
+    imgProduct[0].appendChild(image);
+    imgProduct.innerHTML += `<img src=${product.imageUrl} alt=${product.altTxt}>`;
 
     let title = document.getElementById('title');
     title.innerHTML += `${product.name}`;

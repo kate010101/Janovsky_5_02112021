@@ -4,13 +4,13 @@ fetch('http://localhost:3000/api/products')
     })
     .then(function (data) { 
         console.log(data.length);
-        products(data);
+        productsList(data);
     })
     .catch(function(error) {
         console.log("Error");
     });
 
-function products(product) {
+function productsList(product) {
   for(let i=0; i<product.length; i++) {
     console.log(product[i]);
 
