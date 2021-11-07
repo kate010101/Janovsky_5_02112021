@@ -31,3 +31,15 @@ function seeProduct(product) {
 
     listOptions(product);
 };
+
+function listOptions(product) {
+    for(let i=0; i< product.colors.length; i++) {
+            
+        var option = new Option();
+        option.value = product.colors[i];
+        option.text = product.colors[i];
+
+        let optionColor = document.getElementById('colors');
+        optionColor.appendChild(option);
+    };
+};
