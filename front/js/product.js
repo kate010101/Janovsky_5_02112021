@@ -1,6 +1,7 @@
 const searchParams = new URLSearchParams(location.search);
 let newId = searchParams.get("id");
 let currentProduct = {};
+
 getProducts();
 
 /**/
@@ -55,8 +56,11 @@ document.querySelector("#addToCart").addEventListener("click", () => {
   var quantity = document.querySelector("#quantity").value;
   currentProduct.quantity = quantity;
   var description = document.querySelector("#description").innerHTML;
+  var color = colors.value;
+  currentProduct.color = color;
   console.log("La description est " + description);
-  console.log("La valeur de la quantité est" + quantity);
+  console.log("La valeur de la quantité est " + quantity);
+  console.log("La couleur choisie est : " + color);
   console.log("Le produit courant à enregistrer est : ", currentProduct);
   localStorage.setItem("cart", JSON.stringify(currentProduct));
 });
