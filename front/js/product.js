@@ -1,45 +1,62 @@
 const searchParams = new URLSearchParams(location.search);
 let newId = searchParams.get("id");
+let currentProduct = {};
+getProducts();
 
-
-fetch('http://localhost:3000/api/products/' + newId)
+/**/
+function getProducts() {
+  fetch("http://localhost:3000/api/products/" + newId)
     .then(function (response) {
-        return response.json();
+      return response.json();
     })
     .then(function (data) {
-        seeProduct(data);
+      currentProduct = data;
+      seeProduct(data);
+    })
+    .catch((error) => {
+      console.log(" Erreur lors de la récupération des produits ", error);
     });
+}
 
-
+/**/
 function seeProduct(product) {
+  var image = new Image();
+  image.src = product.imageUrl;
 
-    var image = new Image();    
-    image.src = product.imageUrl;
+  let imgProduct = document.getElementsByClassName("item__img");
+  imgProduct[0].appendChild(image);
+  imgProduct.innerHTML += `<img src=${product.imageUrl} alt=${product.altTxt}>`;
 
-    let imgProduct = document.getElementsByClassName('item__img');
-    imgProduct[0].appendChild(image);
-    imgProduct.innerHTML += `<img src=${product.imageUrl} alt=${product.altTxt}>`;
+  let title = document.getElementById("title");
+  title.innerHTML += `${product.name}`;
 
-    let title = document.getElementById('title');
-    title.innerHTML += `${product.name}`;
+  let price = document.getElementById("price");
+  price.innerHTML += `${product.price}`;
 
-    let price = document.getElementById('price');
-    price.innerHTML += `${product.price}`;
+  let description = document.getElementById("description");
+  description.innerHTML += `${product.description}`;
 
-    let description = document.getElementById('description');
-    description.innerHTML += `${product.description}`;
-
-    listOptions(product);
-};
+  listOptions(product);
+}
 
 function listOptions(product) {
-    for(let i=0; i< product.colors.length; i++) {
-            
-        var option = new Option();
-        option.value = product.colors[i];
-        option.text = product.colors[i];
+  for (let i = 0; i < product.colors.length; i++) {
+    var option = new Option();
+    option.value = product.colors[i];
+    option.text = product.colors[i];
 
-        let optionColor = document.getElementById('colors');
-        optionColor.appendChild(option);
-    };
-};
+    let optionColor = document.getElementById("colors");
+    optionColor.appendChild(option);
+  }
+}
+
+document.querySelector("#addToCart").addEventListener("click", () => {
+  console.log("Cliqué");
+  var quantity = document.querySelector("#quantity").value;
+  currentProduct.quantity = quantity;
+  var description = document.querySelector("#description").innerHTML;
+  console.log("La description est " + description);
+  console.log("La valeur de la quantité est" + quantity);
+  console.log("Le produit courant à enregistrer est : ", currentProduct);
+  localStorage.setItem("cart", JSON.stringify(currentProduct));
+});
