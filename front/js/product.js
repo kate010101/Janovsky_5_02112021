@@ -64,3 +64,5 @@ document.querySelector("#addToCart").addEventListener("click", () => {
   console.log("Le produit courant à enregistrer est : ", currentProduct);
   localStorage.setItem("cart", JSON.stringify(currentProduct));
 });
+
+console.log(localStorage.cart);
