@@ -62,7 +62,18 @@ document.querySelector("#addToCart").addEventListener("click", () => {
   console.log("La valeur de la quantité est " + quantity);
   console.log("La couleur choisie est : " + color);
   console.log("Le produit courant à enregistrer est : ", currentProduct);
-  localStorage.setItem("cart", JSON.stringify(currentProduct));
-});
 
-console.log(localStorage.cart);
+  let dansLeLocalStorage = JSON.parse(localStorage.getItem("cart"));
+  console.log(dansLeLocalStorage);
+
+  if (dansLeLocalStorage) {
+    dansLeLocalStorage.push(currentProduct);
+    localStorage.setItem("cart", JSON.stringify(dansLeLocalStorage));
+    console.log(dansLeLocalStorage);
+  } else {
+    dansLeLocalStorage = [];
+    dansLeLocalStorage.push(currentProduct);
+    localStorage.setItem("cart", JSON.stringify(dansLeLocalStorage));
+    console.log(dansLeLocalStorage);
+  }
+});
