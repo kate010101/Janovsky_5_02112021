@@ -77,7 +77,10 @@ function addProductToCart(currentProductToAdd) {
     let flag = false;
 
     for (let i = 0; i < currentListCart.length; i++) {
-      if (currentListCart[i]._id == currentProductToAdd._id) {
+      if (
+        currentListCart[i]._id == currentProductToAdd._id &&
+        currentProductToAdd.color == currentListCart[i].color
+      ) {
         currentListCart[i].quantity =
           parseInt(currentProductToAdd.quantity) +
           parseInt(currentListCart[i].quantity);
