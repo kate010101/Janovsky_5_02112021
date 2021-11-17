@@ -2,6 +2,10 @@ console.log("Je suis dans le panier", JSON.parse(localStorage.getItem("cart")));
 
 let cart = JSON.parse(localStorage.getItem("cart"));
 
+let productInCart = {};
+
+let toDelete = {};
+
 let cartItem = document.querySelector("#cart__items");
 
 cart.forEach((productInCart) => {
@@ -16,6 +20,7 @@ cart.forEach((productInCart) => {
                 <div class="cart__item__content">
                   <div class="cart__item__content__titlePrice">
                     <h2>${productInCart.name}</h2>
+                    <p>${productInCart.color}</p>
                     <p>${
                       productInCart.price * productInCart.quantity + " €"
                     }</p>
@@ -31,13 +36,20 @@ cart.forEach((productInCart) => {
                   </div>
                 </div>
               </article>`;
+  btnSupprimer();
 });
 
-/*for (let products = 0; products < cart.length; products++) {
-  var productInCart = cart[products];
-  if () {
+function btnSupprimer() {
+  let deleteBtns = document.querySelectorAll(".deleteItem");
+  console.log(deleteBtns);
 
+  for (let i = 0; i < deleteBtns.length; i++) {
+    var toDelete = deleteBtns[i];
+    toDelete.addEventListener("click", () => {
+      console.log("Il faut supprimer ce produit");
+      cart.pop(productInCart);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      window.location.reload();
+    });
   }
-  console.log(productInCart.Id);*/
-
-//console.log(cart[0], cart[1], cart[2]);
+}
