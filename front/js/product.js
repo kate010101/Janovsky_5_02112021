@@ -63,17 +63,28 @@ document.querySelector("#addToCart").addEventListener("click", () => {
   console.log("La couleur choisie est : " + color);
   console.log("Le produit courant à enregistrer est : ", currentProduct);
 
-  let dansLeLocalStorage = JSON.parse(localStorage.getItem("cart"));
-  console.log(dansLeLocalStorage);
-
-  if (dansLeLocalStorage) {
-    dansLeLocalStorage.push(currentProduct);
-    localStorage.setItem("cart", JSON.stringify(dansLeLocalStorage));
-    console.log(dansLeLocalStorage);
-  } else {
-    dansLeLocalStorage = [];
-    dansLeLocalStorage.push(currentProduct);
-    localStorage.setItem("cart", JSON.stringify(dansLeLocalStorage));
-    console.log(dansLeLocalStorage);
-  }
+  addProductToCart(currentProduct);
 });
+
+function addProductToCart(currentProductToAdd) {
+  let currentListCart = JSON.parse(localStorage.getItem("cart"));
+  if (currentListCart == null) {
+    currentListCart = [];
+    currentListCart.push(currentProductToAdd);
+    localStorage.setItem("cart", JSON.stringify(currentListCart));
+  } else {
+    // Me permet de savoir si j'ai trouvé l'élément ou pas (si le produit existe déjà dans le panier ou pas)
+    let flag = false;
+
+    for (let i = 0; i < currentListCart.length; i++) {
+      if (currentListCart[i]._id == currentProductToAdd._id) {
+        currentListCart[i].quantity =
+          parseInt(currentProductToAdd.quantity) +
+          parseInt(currentListCart[i].quantity);
+        flag = true;
+      }
+    }
+    if (!flag) currentListCart.push(currentProductToAdd);
+    localStorage.setItem("cart", JSON.stringify(currentListCart));
+  }
+}
