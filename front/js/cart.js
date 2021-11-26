@@ -91,3 +91,29 @@ function sumPriceInCart() {
   let totalMoney = document.querySelector("#totalPrice");
   totalMoney.innerHTML = sumMoney;
 }
+
+// Controle du formulaire
+const firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
+const lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
+const addressErrorMsg = document.getElementById("addressErrorMsg");
+const cityErrorMsg = document.getElementById("cityErrorMsg");
+const emailErrorMsg = document.getElementById("emailErrorMsg");
+const buttonValidation = document.getElementById("order");
+
+/*var emailRegExp =
+  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;*/
+
+// Caractères acceptables
+var formRegex = new RegExp("^[a-zA-Z-]+$");
+// Selection du champ "Pénom"
+let firstName = document.querySelector("#firstName");
+// Fonction de vérification de la saisie
+firstName.addEventListener("change", () => {
+  var test = firstName.value.length == null || formRegex.test(firstName.value);
+  if (!test) {
+    console.log("pas juste " + firstName.value);
+    firstNameErrorMsg.innerHTML = "Merci de vérifier le champ saisi";
+  } else {
+    console.log("juste");
+  }
+});
