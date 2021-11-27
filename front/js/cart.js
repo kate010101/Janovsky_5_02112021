@@ -100,14 +100,12 @@ const cityErrorMsg = document.getElementById("cityErrorMsg");
 const emailErrorMsg = document.getElementById("emailErrorMsg");
 const buttonValidation = document.getElementById("order");
 
-/*var emailRegExp =
-  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;*/
-
-// Caractères acceptables
-var formRegex = new RegExp("^[a-zA-Z-]+$");
+/*Nom et Prénom
+Caractères acceptables*/
+var formRegex = new RegExp("^[éèçùàa-zA-Z- ]+$");
 // Selection du champ "Pénom"
 let firstName = document.querySelector("#firstName");
-// Fonction de vérification de la saisie
+// Fonction de vérification de la saisie du Prénom
 firstName.addEventListener("change", () => {
   var test = firstName.value.length == null || formRegex.test(firstName.value);
   if (!test) {
@@ -115,5 +113,68 @@ firstName.addEventListener("change", () => {
     firstNameErrorMsg.innerHTML = "Merci de vérifier le champ saisi";
   } else {
     console.log("juste");
+    firstNameErrorMsg.innerHTML = "";
+  }
+});
+// Selection du champ "Nom"
+let lastName = document.querySelector("#lastName");
+// Fonction de vérification de la saisie du Nom
+lastName.addEventListener("change", () => {
+  var test = lastName.value.length == null || formRegex.test(lastName.value);
+  if (!test) {
+    console.log("pas juste " + lastName.value);
+    lastNameErrorMsg.innerHTML = "Merci de vérifier le champ saisi";
+  } else {
+    console.log("juste");
+    lastNameErrorMsg.innerHTML = "";
+  }
+});
+
+//Adresse
+// Caractères acceptables
+var addressRegex = new RegExp("^[éèçùàa-zA-Z-,0-9 ]+$");
+// Selection du champ "Adresse"
+let addressForm = document.querySelector("#address");
+// Fonction de vérification de la saisie de l'Adresse
+addressForm.addEventListener("change", () => {
+  var test =
+    addressForm.value.length == null || addressRegex.test(addressForm.value);
+  if (!test) {
+    console.log("pas juste " + addressForm.value);
+    addressErrorMsg.innerHTML = "Merci de vérifier le champ saisi";
+  } else {
+    console.log("juste");
+    addressErrorMsg.innerHTML = "";
+  }
+});
+//City
+// Selection du champ "Ville"
+let cityForm = document.querySelector("#city");
+// Fonction de vérification de la saisie de Ville
+cityForm.addEventListener("change", () => {
+  var test = cityForm.value.length == null || addressRegex.test(cityForm.value);
+  if (!test) {
+    console.log("pas juste " + cityForm.value);
+    cityErrorMsg.innerHTML = "Merci de vérifier le champ saisi";
+  } else {
+    console.log("juste");
+    cityErrorMsg.innerHTML = "";
+  }
+});
+
+// E-mail
+// Caractères acceptables @ et un . obligatoires
+var emailRegex = new RegExp(".+@.+[..].");
+// Selection du champ "E-mail"
+let emailForm = document.querySelector("#email");
+// Fonction de vérification de la saisie de e-mail
+emailForm.addEventListener("change", () => {
+  var test = emailForm.value.length == null || emailRegex.test(emailForm.value);
+  if (!test) {
+    console.log("pas juste " + emailForm.value);
+    emailErrorMsg.innerHTML = "Merci de vérifier le champ saisi";
+  } else {
+    console.log("juste");
+    emailErrorMsg.innerHTML = "";
   }
 });
