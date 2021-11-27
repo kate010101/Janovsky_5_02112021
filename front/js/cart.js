@@ -100,19 +100,24 @@ const cityErrorMsg = document.getElementById("cityErrorMsg");
 const emailErrorMsg = document.getElementById("emailErrorMsg");
 const buttonValidation = document.getElementById("order");
 
+let command = document.querySelector("#order");
+
 /*Nom et Prénom
 Caractères acceptables*/
-var formRegex = new RegExp("^[éèçùàa-zA-Z- ]+$");
+var formRegex = new RegExp("^['éèçùàa-zA-Z- ]+$");
 // Selection du champ "Pénom"
 let firstName = document.querySelector("#firstName");
 // Fonction de vérification de la saisie du Prénom
 firstName.addEventListener("change", () => {
   var test = firstName.value.length == null || formRegex.test(firstName.value);
   if (!test) {
-    console.log("pas juste " + firstName.value);
-    firstNameErrorMsg.innerHTML = "Merci de vérifier le champ saisi";
+    firstNameErrorMsg.innerHTML = "Merci de corriger le champ saisi";
+    command.addEventListener("click", function (event) {
+      event.preventDefault();
+    });
+    firstName.value = null;
+    console.log("pas juste " + firstName.value + " Bouton commander bloqué");
   } else {
-    console.log("juste");
     firstNameErrorMsg.innerHTML = "";
   }
 });
@@ -122,10 +127,13 @@ let lastName = document.querySelector("#lastName");
 lastName.addEventListener("change", () => {
   var test = lastName.value.length == null || formRegex.test(lastName.value);
   if (!test) {
-    console.log("pas juste " + lastName.value);
-    lastNameErrorMsg.innerHTML = "Merci de vérifier le champ saisi";
+    lastNameErrorMsg.innerHTML = "Merci de corriger le champ saisi";
+    command.addEventListener("click", function (event) {
+      event.preventDefault();
+    });
+    lastName.value = null;
+    console.log("pas juste " + lastName.value + " Bouton commander bloqué");
   } else {
-    console.log("juste");
     lastNameErrorMsg.innerHTML = "";
   }
 });
@@ -140,10 +148,13 @@ addressForm.addEventListener("change", () => {
   var test =
     addressForm.value.length == null || addressRegex.test(addressForm.value);
   if (!test) {
-    console.log("pas juste " + addressForm.value);
-    addressErrorMsg.innerHTML = "Merci de vérifier le champ saisi";
+    addressErrorMsg.innerHTML = "Merci de corriger le champ saisi";
+    command.addEventListener("click", function (event) {
+      event.preventDefault();
+    });
+    addressForm.value = null;
+    console.log("pas juste " + addressForm.value + " Bouton commander bloqué");
   } else {
-    console.log("juste");
     addressErrorMsg.innerHTML = "";
   }
 });
@@ -154,10 +165,13 @@ let cityForm = document.querySelector("#city");
 cityForm.addEventListener("change", () => {
   var test = cityForm.value.length == null || addressRegex.test(cityForm.value);
   if (!test) {
-    console.log("pas juste " + cityForm.value);
-    cityErrorMsg.innerHTML = "Merci de vérifier le champ saisi";
+    cityErrorMsg.innerHTML = "Merci de corriger le champ saisi";
+    command.addEventListener("click", function (event) {
+      event.preventDefault();
+    });
+    cityForm.value = null;
+    console.log("pas juste " + cityForm.value + " Bouton commander bloqué");
   } else {
-    console.log("juste");
     cityErrorMsg.innerHTML = "";
   }
 });
@@ -171,10 +185,19 @@ let emailForm = document.querySelector("#email");
 emailForm.addEventListener("change", () => {
   var test = emailForm.value.length == null || emailRegex.test(emailForm.value);
   if (!test) {
-    console.log("pas juste " + emailForm.value);
-    emailErrorMsg.innerHTML = "Merci de vérifier le champ saisi";
+    emailErrorMsg.innerHTML = "Merci de corriger le champ saisi";
+    command.addEventListener("click", function (event) {
+      event.preventDefault();
+    });
+    emailForm.value = null;
+    console.log("pas juste " + emailForm.value + " Bouton commander bloqué");
   } else {
-    console.log("juste");
     emailErrorMsg.innerHTML = "";
   }
+});
+
+//Bouton Commander
+
+command.addEventListener("click", () => {
+  console.log("Cliqué !");
 });
