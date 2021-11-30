@@ -104,7 +104,7 @@ let command = document.querySelector("#order");
 
 /*Nom et Prénom
 Caractères acceptables*/
-var formRegex = new RegExp("^['éèçùàa-zA-Z- ]+$");
+var formRegex = new RegExp("^['éèçùàa-zA-Z- ]{3,}$");
 // Selection du champ "Pénom"
 let firstName = document.querySelector("#firstName");
 // Fonction de vérification de la saisie du Prénom
@@ -198,6 +198,56 @@ emailForm.addEventListener("change", () => {
 
 //Bouton Commander
 
-command.addEventListener("click", () => {
-  console.log("Cliqué !");
+function getProductIdFromCart() {
+  let listProductId = [];
+  for (
+    let index = 0;
+    index < JSON.parse(localStorage.getItem("cart")).length;
+    index++
+  ) {
+    listProductId[index] = JSON.parse(localStorage.getItem("cart"))[index]._id;
+  }
+  console.log("Le tableau de produit de mes ID est : " + listProductId);
+  return listProductId;
+}
+
+command.addEventListener("click", (event) => {
+  let contact = {
+    "firstName": firstName.value,
+    "lastName": lastName.value,
+    "address": addressForm.value,
+    "city": city.value,
+    "email": emailForm.value,
+  };
+  let listProductId = getProductIdFromCart();
+  console.log("Cliqué ! " + JSON.stringify(contact), listProductId);
+  
+  fetch("http://localhost:3000/api/products/order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      "contact": contact,
+      "products": listProductId
+    }),
+  })
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      order = data;
+      console.log(order);
+      debugger;
+      window.location = `confirmation.html?orderId=${orderId}`;
+    })
+    .catch((e) => console.log("il y a une erreur sur la page :" + e));
+
+  /*let orderId = document.querySelector("#orderId");
+  console.log(orderId);
+  /*
+  window.location = `confirmation.html?orderId=${orderId}`; // redirection vers page confirmation
+  //localStorage.clear(); // vide le localStorage
+  const urlConfirmation = window.location.search;
+  const urlSearchParams = new URLSearchParams(urlConfirmation);
+  orderId.innerHTML = urlSearchParams.get("order"); //récupère la clé orderId et l'insère dans le span
+ */
 });
