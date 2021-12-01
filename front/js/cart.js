@@ -212,6 +212,7 @@ function getProductIdFromCart() {
 }
 
 command.addEventListener("click", (event) => {
+  debugger;
   let contact = {
     "firstName": firstName.value,
     "lastName": lastName.value,
@@ -234,20 +235,10 @@ command.addEventListener("click", (event) => {
       return response.json();
     })
     .then(function (data) {
-      order = data;
-      console.log(order);
-      debugger;
-      window.location = `confirmation.html?orderId=${orderId}`;
+      console.log(data.orderId);
+      orderId = data.orderId;
+      sessionStorage.setItem("data",JSON.stringify(orderId))
+      
     })
     .catch((e) => console.log("il y a une erreur sur la page :" + e));
-
-  /*let orderId = document.querySelector("#orderId");
-  console.log(orderId);
-  /*
-  window.location = `confirmation.html?orderId=${orderId}`; // redirection vers page confirmation
-  //localStorage.clear(); // vide le localStorage
-  const urlConfirmation = window.location.search;
-  const urlSearchParams = new URLSearchParams(urlConfirmation);
-  orderId.innerHTML = urlSearchParams.get("order"); //récupère la clé orderId et l'insère dans le span
- */
 });
