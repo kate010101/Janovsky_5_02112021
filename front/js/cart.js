@@ -237,7 +237,7 @@ command.addEventListener("click", (event) => {
     .then(function (data) {
       console.log(data.orderId);
       orderId = data.orderId;
-      sessionStorage.setItem("data",JSON.stringify(orderId))
+      sessionStorage.setItem("data",JSON.stringify(orderId));
       
     })
     .catch((e) => console.log("il y a une erreur sur la page :" + e));
