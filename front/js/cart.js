@@ -197,22 +197,27 @@ emailForm.addEventListener("change", () => {
 });
 
 //Bouton Commander
-
+// Fonction qui récupère les Id des produits dans le panier
 function getProductIdFromCart() {
   let listProductId = [];
   for (
     let index = 0;
     index < JSON.parse(localStorage.getItem("cart")).length;
     index++
-  ) {
+  ) 
+  // Et qui retourne les résultats dans un tableau
+  {
     listProductId[index] = JSON.parse(localStorage.getItem("cart"))[index]._id;
   }
   console.log("Le tableau de produit de mes ID est : " + listProductId);
   return listProductId;
 }
 
+// Fonction effectuée au clique du bouton commander pour passer la commande
 command.addEventListener("click", (event) => {
-  debugger;
+  // Evite le fonctionnement automatique du bouton
+  event.preventDefault();
+    // Création de l'objet contact
   let contact = {
     "firstName": firstName.value,
     "lastName": lastName.value,
@@ -220,9 +225,10 @@ command.addEventListener("click", (event) => {
     "city": city.value,
     "email": emailForm.value,
   };
+  // Création de la variable réunissant les id des produits du panier
   let listProductId = getProductIdFromCart();
   console.log("Cliqué ! " + JSON.stringify(contact), listProductId);
-  
+  // Requête "Clé": Valeur, en envoyant les infos de contact et d'id
   fetch("http://localhost:3000/api/products/order", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -231,14 +237,20 @@ command.addEventListener("click", (event) => {
       "products": listProductId
     }),
   })
+  // Retourne la réponse en format JSON
     .then(function (response) {
       return response.json();
     })
+    // Récupère les données de la réponse serveur 
     .then(function (data) {
       console.log(data.orderId);
       orderId = data.orderId;
+      // Stocke la valeur orderId dans la clé data du sessionStorage
       sessionStorage.setItem("data",JSON.stringify(orderId));
-      
+      // Redirige l'utilisateur sur la page confirmation
+      window.location.href = "confirmation.html";
     })
     .catch((e) => console.log("il y a une erreur sur la page :" + e));
 });
+
+
