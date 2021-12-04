@@ -7,7 +7,7 @@ let currentProduct = {};
 // Affiche le produit
 getProducts();
 
-// Pour récupérer les informations du produit et créer son URL propre
+// Pour récupérer les informations du produit et créer sa page propre
 function getProducts() {
   fetch("http://localhost:3000/api/products/" + newId)
     .then(function (response) {
