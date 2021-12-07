@@ -13,8 +13,8 @@ function showCart() {
       <div class="cart__item__content">
         <div class="cart__item__content__description">
           <h2>${productsLocalStorage[i].name}</h2>
-          <p>${productsLocalStorage[i].color}</p>
-          <p>${productsLocalStorage[i].price}</p>
+          <p>Couleur : ${productsLocalStorage[i].color}</p>
+          <p>Prix : ${productsLocalStorage[i].price}</p>
         </div>
         <div class="cart__item__content__settings">
           <div class="cart__item__content__settings__quantity">
@@ -22,7 +22,7 @@ function showCart() {
             <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${productsLocalStorage[i].quantity}"/>
           </div>
           <div class="cart__item__content__settings__delete">
-            <p class="deleteItem">Supprimer</p>
+            <p class="deleteItem"><br/>Supprimer</p>
           </div>
         </div>
       </div>
@@ -53,12 +53,17 @@ deleteItemContainer.forEach((item, index) => {
 quantityContainer.forEach((item, index) => {
   // Au click, modifie l'item (le produit) sur le LocalStorage
   item.addEventListener("change", () => {
-    productsLocalStorage[index].quantity = quantityContainer[index].value;
-    localStorage.setItem("cart", JSON.stringify(productsLocalStorage));
-    document.querySelector("#qte" + index).innerHTML =
-      "Qté : " + quantityContainer[index].value;
-    sumQuantityProduct();
-    sumPriceInCart();
+    // Empêche une quantité à 0 ou négative
+    if (quantityContainer[index].value >= 1) {
+      productsLocalStorage[index].quantity = quantityContainer[index].value;
+      localStorage.setItem("cart", JSON.stringify(productsLocalStorage));
+      document.querySelector("#qte" + index).innerHTML =
+        "Qté : " + quantityContainer[index].value;
+      sumQuantityProduct();
+      sumPriceInCart();
+    } else {
+      alert("Merci de saisir une quantité positive ou de supprimer le produit du panier");
+    }
   });
 });
 // Appelle la fonction de calcul de la quantité totale
@@ -104,7 +109,7 @@ let command = document.querySelector("#order");
 
 /*Nom et Prénom
 Caractères acceptables*/
-var formRegex = new RegExp("^['éèçùàa-zA-Z- ]{3,}$");
+var formRegex = new RegExp("^[éèçùàa-zA-Z- ]{3,}$");
 // Selection du champ "Pénom"
 let firstName = document.querySelector("#firstName");
 // Fonction de vérification de la saisie du Prénom
@@ -213,44 +218,49 @@ function getProductIdFromCart() {
   return listProductId;
 }
 
+  
 // Fonction effectuée au clique du bouton commander pour passer la commande
 command.addEventListener("click", (event) => {
   // Evite le fonctionnement automatique du bouton
   event.preventDefault();
+  // Si le formulaire est mal rempli, empêche de passer la commande
+  if (emailForm.value < 1 || cityForm.value < 1 || addressForm.value < 1 || lastName.value < 1 || firstName.value < 1) {
+    alert("Formulaire de contact incorrect.\nMerci de remplir les champs concernés.");
+  } else {
     // Création de l'objet contact
-  let contact = {
-    "firstName": firstName.value,
-    "lastName": lastName.value,
-    "address": addressForm.value,
-    "city": city.value,
-    "email": emailForm.value,
-  };
-  // Création de la variable réunissant les id des produits du panier
-  let listProductId = getProductIdFromCart();
-  console.log("Cliqué ! " + JSON.stringify(contact), listProductId);
-  // Requête "Clé": Valeur, en envoyant les infos de contact et d'id
-  fetch("http://localhost:3000/api/products/order", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      "contact": contact,
-      "products": listProductId
-    }),
-  })
-  // Retourne la réponse en format JSON
-    .then(function (response) {
-      return response.json();
-    })
-    // Récupère les données de la réponse serveur 
-    .then(function (data) {
-      console.log(data.orderId);
-      orderId = data.orderId;
-      // Stocke la valeur orderId dans la clé data du sessionStorage
-      sessionStorage.setItem("data",JSON.stringify(orderId));
-      // Redirige l'utilisateur sur la page confirmation
-      window.location.href = "confirmation.html";
-    })
-    .catch((e) => console.log("il y a une erreur sur la page :" + e));
-});
+    let contact = {
+      "firstName": firstName.value,
+      "lastName": lastName.value,
+      "address": addressForm.value,
+      "city": city.value,
+      "email": emailForm.value,
+    };
 
+    // Création de la variable réunissant les id des produits du panier
+    let listProductId = getProductIdFromCart();
+    console.log("Cliqué ! " + JSON.stringify(contact), listProductId);
+    // Requête "Clé": Valeur, en envoyant les infos de contact et d'id
+    fetch("http://localhost:3000/api/products/order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        "contact": contact,
+        "products": listProductId
+      }),
+    })
+    // Retourne la réponse en format JSON
+      .then(function (response) {
+        return response.json();
+      })
+      // Récupère les données de la réponse serveur 
+      .then(function (data) {
+        console.log(data.orderId);
+        orderId = data.orderId;
+        // Redirige l'utilisateur sur la page confirmation contenant l'orderId dans l'URL de celle-ci
+        window.location.href = `confirmation.html?orderId=${data.orderId}`;
+      })
+      .catch((e) => console.log("il y a une erreur sur la page :" + e));
+  }
+});
+   
 

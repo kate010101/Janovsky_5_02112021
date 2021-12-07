@@ -1,4 +1,4 @@
-// Récupération de chaque paramètre id de l'URL
+// Récupération de chaque id par URL
 const searchParams = new URLSearchParams(location.search);
 // Id du produit
 let newId = searchParams.get("id");
@@ -76,8 +76,21 @@ document.querySelector("#addToCart").addEventListener("click", () => {
   console.log("La couleur choisie est : " + color);
   console.log("Le produit courant à enregistrer est : ", currentProduct);
 
-  // Ajoute le produit au panier
-  addProductToCart(currentProduct);
+  // Ajoute le produit au panier si la couleur est choisie et la quantité supérieure à 0
+  if (color != 0 && quantity >= 1 ) {
+    addProductToCart(currentProduct);
+    // Ouvre une fenêtre confirm pour rediriger l'utilisateur après l'ajout du produit
+    var resp = confirm("Produit ajouté au Panier !\nPour aller au Panier cliquez sur OK\nPour aller à l'Accueil cliquez sur Annuler");
+    if (resp == true) {
+      console.log("Ok préssé !");
+      window.location.href = "cart.html";
+    } else {
+      window.location.href = "index.html";
+    }
+  // Si la couleur ou la quantité sont mal indiquées, une alerte est générée  
+  } else {
+    alert("Veuillez vérifier que la Couleur soit sélectionnée \n et/ou que la Quantité soit supérieure à 0");
+  }
 });
 
 // Pour ajouter le produit
